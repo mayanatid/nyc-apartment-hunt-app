@@ -1,0 +1,35 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<br>
+<div class="container">
+    <div class="card">
+        <div class="card-body" id="det_backdrop">
+        <div class="row">
+            <div class="col-md-4">
+                <a href="{{listing.image}}" title="click to enlarge">
+                    <img src="{{listing.image}}" alt="{{ listing.name }}" class="img-fluid" id="img_det">
+                </a>
+            </div>
+            <div class="col-md-8">
+                <h3><a href="{{ listing.link }} " target="_blank">{{ listing.name }}</a></h3>
+                <h5><b>{{ listing.neighborhood }} </b></h5>
+                <h5>Price: {{ listing.price }} </h5>
+                <h5>Beds: {{ listing.beds }} </h5>
+                <h5>Baths: {{ listing.baths }} </h5>
+                <h5>Avg Rating: {{ listing.averageRating }}</h5>
+                <h5>Added: {{ listing.addDate }}</h5>
+                <a href="{% url 'main:edit_listing' listing.id %}" class="btn btn-warning">Edit Listing</a>
+                <a href="{% url 'main:delete_listing' listing.id %}" class="btn btn-danger">Delete Listing</a>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock  %}
