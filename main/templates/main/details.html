@@ -20,8 +20,13 @@
                 <h5>Baths: {{ listing.baths }} </h5>
                 <h5>Avg Rating: {{ listing.averageRating }}</h5>
                 <h5>Added: {{ listing.addDate }}</h5>
-                <a href="{% url 'main:edit_listing' listing.id %}" class="btn btn-warning">Edit Listing</a>
-                <a href="{% url 'main:delete_listing' listing.id %}" class="btn btn-danger">Delete Listing</a>
+
+                {% if request.user.is_authenticated %}
+                    {% if request.user.is_superuser%}
+                        <a href="{% url 'main:edit_listing' listing.id %}" class="btn btn-warning">Edit Listing</a>
+                        <a href="{% url 'main:delete_listing' listing.id %}" class="btn btn-danger">Delete Listing</a>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
         </div>

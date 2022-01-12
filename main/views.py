@@ -24,42 +24,67 @@ def detail(request, id):
 
 # add listing to database
 def add_listing(request):
-    if request.method == "POST":
-        form = ListingForm(request.POST or None)
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            if request.method == "POST":
+                form = ListingForm(request.POST or None)
 
-        # Check if form is valid
-        if form.is_valid():
-            data = form.save(commit=False)
-            data.save()
+                # Check if form is valid
+                if form.is_valid():
+                    data = form.save(commit=False)
+                    data.save()
+                    return redirect("main:home")
+            else:
+                form = ListingForm()
+            return render(request, 'main/addlisting.html', {"form": form, "controller": "Add Listing"})
+        
+        # if not admin
+        else:
             return redirect("main:home")
-    else:
-        form = ListingForm()
-    return render(request, 'main/addlisting.html', {"form": form, "controller": "Add Listing"})
+
+    # if not logged in
+    return redirect("accounts:login")
+
 
 # edit listing
 def edit_listing(request, id):
-    # get the listing linked with id
-    listing = Listing.objects.get(id=id)
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            # get the listing linked with id
+            listing = Listing.objects.get(id=id)
 
-    # form check
-    if request.method == "POST":
-        form = ListingForm(request.POST or None, instance=listing)
-        # Check if form is valid
-        if form.is_valid():
-            data = form.save(commit=False)
-            data.save()
+            # form check
+            if request.method == "POST":
+                form = ListingForm(request.POST or None, instance=listing)
+                # Check if form is valid
+                if form.is_valid():
+                    data = form.save(commit=False)
+                    data.save()
+                    return redirect("main:detail", id)
+            else:
+                form = ListingForm(instance=listing) 
+            return render(request, 'main/addlisting.html', {"form": form, "controller": "Edit Listing"})
+        # if not admin
+        else:
             return redirect("main:detail", id)
-    else:
-       form = ListingForm(instance=listing) 
-    return render(request, 'main/addlisting.html', {"form": form, "controller": "Edit Listing"})
+
+    # if not logged in
+    return redirect("accounts:login")
+
 
 
 # delete listing
 def delete_listing(request, id):
-    
-    # Get listing
-    listing = Listing.objects.get(id=id)
+    if request.user.is_authenticated:
+        if request.user.is_superuser:    
+            # Get listing
+            listing = Listing.objects.get(id=id)
 
-    # delete the listing
-    listing.delete()
-    return redirect("main:home")
+            # delete the listing
+            listing.delete()
+            return redirect("main:home")
+        else:
+            return redirect("main:detail", id)
+            
+    # if not logged in
+    return redirect("accounts:login")
