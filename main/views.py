@@ -23,33 +23,37 @@ HOOD_CHOICES=[
 
 # STILL NEED TO ADD LOGIN CHECK ON HOME
 def home(request):
-    print(request.GET)
-    query = request.GET
-    hood = query.get("neighborhood")
-    order_by = request.GET.get('order_by', 'addDate')
-    allListings = None
-    if hood:
-        allListings = Listing.objects.filter(neighborhood__icontains=hood)
+    if request.user.is_authenticated:
+        print(request.GET)
+        query = request.GET
+        hood = query.get("neighborhood")
+        order_by = request.GET.get('order_by', 'addDate')
+        allListings = None
+        if hood:
+            allListings = Listing.objects.filter(neighborhood__icontains=hood)
+        else:
+            hood=""
+            allListings=Listing.objects.all() # select * from Listing
+
+        print(hood)
+
+        if order_by=='rating':
+            allListings = allListings.annotate(average_rate = (Avg('review__rating_location') + Avg('review__rating_layout') + Avg('review__rating_price'))/3).order_by("-average_rate")
+        elif order_by=='addDate':
+            allListings = allListings.order_by("-"+order_by)
+        else:
+            allListings = allListings.order_by(order_by)
+
+        context = {
+            "listings":allListings,
+            "hood":hood,
+            "hood_choices": HOOD_CHOICES
+        }
+
+        return render(request, 'main/index.html', context)
     else:
-        hood=""
-        allListings=Listing.objects.all() # select * from Listing
-
-    print(order_by)
-
-    if order_by=='rating':
-        allListings = allListings.annotate(average_rate = (Avg('review__rating_location') + Avg('review__rating_layout') + Avg('review__rating_price'))/3).order_by("-average_rate")
-    elif order_by=='addDate':
-        allListings = allListings.order_by("-"+order_by)
-    else:
-        allListings = allListings.order_by(order_by)
-
-    context = {
-        "listings":allListings,
-        "hood":hood,
-        "hood_choices": HOOD_CHOICES
-    }
-
-    return render(request, 'main/index.html', context)
+        # if not logged in
+        return redirect("accounts:login")
 
 # detail page
 def detail(request, id):

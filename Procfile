@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath apthunt apthunt.wsgi --log-file -

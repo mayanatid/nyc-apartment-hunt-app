@@ -102,12 +102,14 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <h5 class="text-left">{{ review.user.username }}</h5>
-                                <h6>Location: {{ review.rating_location|floatformat }}/5</h6>
-                                <h6>&nbsp&nbsp  Layout: {{ review.rating_layout|floatformat }}/5</h6>
-                                <h6>&nbsp&nbsp&nbsp&nbsp&nbsp Price: {{ review.rating_price|floatformat }}/5</h6>
+                            <h4 class="text-left">{{ review.user.username }}</h4>
+                            <br>
+                                <h5>Location: {{ review.rating_location|floatformat }}/5</h5>
+                                <h5>&nbsp&nbsp  Layout: {{ review.rating_layout|floatformat }}/5</h5>
+                                <h5>&nbsp&nbsp&nbsp&nbsp&nbsp Price: {{ review.rating_price|floatformat }}/5</h5>
 
                             {% if request.user == review.user %}
+                            <br>
                             <a href="{% url 'main:edit_review' listing.id review.id%}">Edit</a>
                             <a href="{% url 'main:delete_review' listing.id review.id%}" onclick="return confirm('Are you sure you want to delete?');">Delete</a>
                             {% endif %}

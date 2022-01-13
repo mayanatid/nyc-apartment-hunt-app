@@ -23,11 +23,12 @@
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
+          {% if user.is_authenticated %}
             <li class="nav-item active">
               <a class="nav-link" href="{% url 'main:home' %}">Home <span class="sr-only">(current)</span></a>
             </li>
 
-            {% if user.is_authenticated %}
+           
             <li class="nav-item">
               <a class="nav-link" href="{% url 'main:add_listing' %}">Add Listing</a>
             </li>            
@@ -56,9 +57,10 @@
           </ul>
          
 
-          <form class="form-inline my-2 my-lg-0" method="GET">
+          <form class="form-inline my-2 my-lg-0" method="GET" action="{% url "main:home" %}">
             {% if hood %}
-            <input list="options" class="form-control mr-sm-2" type="search" placeholder="Neighborhood" aria-label="Search" name="neighborhood" value={{ hood }}>
+            <script>window.alert(hood);</script>
+            <input list="options" class="form-control mr-sm-2" type="search" placeholder="Neighborhood" aria-label="Search" name="neighborhood" value="{{ hood }}">
             <datalist id="options">
               {% for choice in hood_choices %}
                 <option>{{ choice}}</option>
