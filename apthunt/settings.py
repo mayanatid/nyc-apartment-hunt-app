@@ -34,7 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'main',
     'accounts',
-    'djmoney',
+    #'djmoney',
     'phone_field',
     'django.contrib.admin',
     'django.contrib.auth',

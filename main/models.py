@@ -1,4 +1,4 @@
-from djmoney.models.fields import MoneyField
+#from djmoney.models.fields import MoneyField
 from phone_field import PhoneField
 from django.utils import timezone
 from django.db import models
