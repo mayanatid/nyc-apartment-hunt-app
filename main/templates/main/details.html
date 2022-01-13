@@ -13,22 +13,114 @@
                 </a>
             </div>
             <div class="col-md-8">
+                
                 <h3><a href="{{ listing.link }} " target="_blank">{{ listing.name }}</a></h3>
                 <h5><b>{{ listing.neighborhood }} </b></h5>
-                <h5>Price: {{ listing.price }} </h5>
+                <h5>Price: ${{ listing.price|floatformat:0 }} </h5>
                 <h5>Beds: {{ listing.beds }} </h5>
                 <h5>Baths: {{ listing.baths }} </h5>
-                <h5>Avg Rating: {{ listing.averageRating }}</h5>
-                <h5>Added: {{ listing.addDate }}</h5>
-
+                <br>
+                <h5><b><u>Rating Average </u></b></h5>
+                <h5>Location: {{ listing.averageLocation }}/5</h5>
+                <h5>Layout: {{ listing.averageLayout}}/5</h5>
+                <h5>Price: {{ listing.averagePrice}}/5</h5>
+                <br>
+                
                 {% if request.user.is_authenticated %}
                     {% if request.user.is_superuser%}
                         <a href="{% url 'main:edit_listing' listing.id %}" class="btn btn-warning">Edit Listing</a>
-                        <a href="{% url 'main:delete_listing' listing.id %}" class="btn btn-danger">Delete Listing</a>
+                        <a href="{% url 'main:delete_listing' listing.id %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?');">Delete Listing</a>
                     {% endif %}
                 {% endif %}
+                <br><br>
+                <h6>Added: {{ listing.addDate }}</h6>
+
             </div>
         </div>
+        </div>
+    </div>
+
+    <br>
+    <form action="{% url 'main:add_review' listing.id %}" method="POST">
+        {% csrf_token %}
+    <div class="card">
+        <div class="card-body">
+            <h3 class="text-center">Add Review</h3>
+            <br>
+            
+            <div class="container">
+                <div class="row">
+                    <div class="col align-self-start">
+                        <label for="rating_location"><strong>Location</strong></label><br>
+                        <input type="range" id="rangeInput1" 
+                            name="rating_location" min="0" max="5" value="0" step="0.5"
+                            oninput="amount1.value=rangeInput1.value">                                                       
+                
+                        <output name="amount1" id="amount1" for="rangeInput1">0</output>
+                    </div>
+                    
+                    <div class="col align-self-center">
+                        <label for="rating_layout"><strong>Layout</strong></label><br>
+                        <input type="range" id="rangeInput2" 
+                            name="rating_layout" min="0" max="5" value="0" step="0.5"
+                            oninput="amount2.value=rangeInput2.value">                                                       
+                
+                        <output name="amount2" id="amount2" for="rangeInput2">0</output>
+                    </div>
+                   
+                    <div class="col align-self-end">
+                        <label for="rating_price"><strong>Price</strong></label><br>
+                        <input type="range" id="rangeInput3" 
+                            name="rating_price" min="0" max="5" value="0" step="0.5"
+                            oninput="amount3.value=rangeInput3.value">                                                       
+                
+                        <output name="amount3" id="amount3" for="rangeInput3">0</output>
+                    </div>
+                </div>
+            </div>
+            <br>
+            
+                <label for="comment">Comments</label>
+                <textarea name="comment" id="comment" cols="30" rows="5" class="form-control">No Comment</textarea>
+               
+
+
+                <br>
+                <input type="submit" class="btn btn-danger" value="Add Review">
+
+            </form>
+        </div>
+    </div>
+    
+    
+    <br>
+    <div class="card">
+        <div class="card-body">
+            <h3 class="text-center">Reviews</h3>
+            {% for review in reviews %}
+            <div class="card" style="background-color: #f5eeee;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h5 class="text-left">{{ review.user.username }}</h5>
+                                <h6>Location: {{ review.rating_location|floatformat }}/5</h6>
+                                <h6>&nbsp&nbsp  Layout: {{ review.rating_layout|floatformat }}/5</h6>
+                                <h6>&nbsp&nbsp&nbsp&nbsp&nbsp Price: {{ review.rating_price|floatformat }}/5</h6>
+
+                            {% if request.user == review.user %}
+                            <a href="{% url 'main:edit_review' listing.id review.id%}">Edit</a>
+                            <a href="{% url 'main:delete_review' listing.id review.id%}" onclick="return confirm('Are you sure you want to delete?');">Delete</a>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-9">
+                            <p>{{ review.comment }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+                
+            {% endfor %}
         </div>
     </div>
 </div>

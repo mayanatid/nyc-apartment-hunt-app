@@ -13,3 +13,10 @@ class ListingForm(forms.ModelForm):
                   'price',
                   'link',
                   'image')
+
+# Will eventually want to add rating field for location, layout, and price
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields= ("comment", "rating_location", "rating_layout", "rating_price")
+        # fields= ("comment", "rating")

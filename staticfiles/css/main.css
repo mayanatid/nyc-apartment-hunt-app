@@ -17,3 +17,9 @@ body{
     height: 12vw;
     object-fit: cover;
 }
+
+.col1 {
+    width: 300px;
+    color: yellow;
+    float: left;
+}

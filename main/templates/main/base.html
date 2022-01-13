@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/main.css' %}" >
     <title>Apartment Hunt NYC</title>
@@ -40,25 +41,52 @@
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
               </div>
+            </li>         
+          </ul>
+          <ul class="navbar-nav nav-right">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sort By
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="?order_by=price&neighborhood={{ hood }}">Price</a>
+                <a class="dropdown-item" href="?order_by=rating&neighborhood={{ hood }}">Rating</a>
+              </div>
             </li>
+          </ul>
+         
+
+          <form class="form-inline my-2 my-lg-0" method="GET">
+            {% if hood %}
+            <input list="options" class="form-control mr-sm-2" type="search" placeholder="Neighborhood" aria-label="Search" name="neighborhood" value={{ hood }}>
+            <datalist id="options">
+              {% for choice in hood_choices %}
+                <option>{{ choice}}</option>
+              {% endfor %}
+            </datalist>
+            {% else %}
+            <input list="options" class="form-control mr-sm-2" type="search" placeholder="Neighborhood" aria-label="Search" name="neighborhood">
+            <datalist id="options">
+              {% for choice in hood_choices %}
+                <option>{{ choice }}</option>
+              {% endfor %}
+            </datalist>
+            {% endif %}
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+
 
             {% else %}
+          <ul class="navbar-nav mr-auto">
             <li class="nav-item">
               <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'accounts:register' %}">Register</a>
             </li>
-
-            {% endif %}
-
-
           </ul>
-          <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </div>
+            {% endif %}
       </nav>
 
     {% block content %}
@@ -71,4 +99,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
+
 </html>

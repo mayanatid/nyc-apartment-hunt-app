@@ -12,12 +12,17 @@
                     <div class="card">
                         <div class="card-body">
                             <img src="{{ listing.image }}" alt="" class="img-fluid">
+                            <br><br>
                             <h4><a href="{% url 'main:detail' listing.id %}">{{ listing.name }}</a></h4>
                             <h5><b>{{ listing.neighborhood }}</b></h5>
-                            <i>beds: {{ listing.beds }}</i><br>
-                            <i>baths: {{ listing.baths }}</i><br>
-                            <i>price: {{ listing.price }}</i><br>
-                            <i>score: {{ listing.averageRating }}</i><br>                   
+                            <h6>beds: {{ listing.beds }}</h6>
+                            <h6>baths: {{ listing.baths }}</h6>
+                            <h6>price: ${{ listing.price | floatformat:0 }}</h6>
+                            <h6>rating: {{  listing.totalAverage| floatformat }}/5</h6>
+                            <br>
+                            <i>added: {{ listing.addDate }}</i>
+                            
+                            
                         </div>
                     </div>
                     <br>
