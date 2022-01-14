@@ -15,10 +15,12 @@
             <div class="col-md-8">
                 
                 <h3><a href="{{ listing.link }} " target="_blank">{{ listing.name }}</a></h3>
-                <h5><b>{{ listing.neighborhood }} </b></h5>
+                <h5><b>{{ listing.neighborhood }}</b></h5>
                 <h5>Price: ${{ listing.price|floatformat:0 }} </h5>
                 <h5>Beds: {{ listing.beds }} </h5>
                 <h5>Baths: {{ listing.baths }} </h5>
+                <a href="http://maps.google.com/?q={{ listing.address }},+New+York,+NY" target="_blank">See on map</a>
+                <br>
                 <br>
                 <h5><b><u>Rating Average </u></b></h5>
                 <h5>Location: {{ listing.averageLocation }}/5</h5>

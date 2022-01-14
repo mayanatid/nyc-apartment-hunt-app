@@ -35,6 +35,9 @@ class Listing(models.Model):
     image = models.URLField(default=None, null=True)
     #image = models.ImageField(null=True, blank=True, upload_to="images/")
 
+    def address(self):
+        return self.name.split(" #")[0]
+
     def __str__(self):
         return self.name
 
