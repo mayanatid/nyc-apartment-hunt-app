@@ -43,6 +43,7 @@
     </div>
 
     <br>
+    {% if request.user.is_superuser%}
     <form action="{% url 'main:add_review' listing.id %}" method="POST">
         {% csrf_token %}
     <div class="card">
@@ -93,6 +94,7 @@
             </form>
         </div>
     </div>
+    {% endif %}
     
     
     <br>
